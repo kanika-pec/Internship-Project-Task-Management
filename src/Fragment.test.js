@@ -9,8 +9,8 @@ const MockFragment = () => {
     const [taskList, setTaskList] = React.useState([])
     return (
         <>
-            <AddNewTask  taskState={taskList} updateList={setTaskList} />
-            <TaskDisplay taskState={taskList} updateList={setTaskList} />
+            <AddNewTask  taskList={taskList} setTaskList={setTaskList} />
+            <TaskDisplay taskList={taskList} setTaskList={setTaskList} />
         </>
     )
 }
