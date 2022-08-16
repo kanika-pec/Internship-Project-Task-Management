@@ -1,12 +1,12 @@
 import React from "react";
+import "@testing-library/react/dont-cleanup-after-each";
 import {render, screen, cleanup, fireEvent} from "@testing-library/react";
-// import "@testing-library/react/dont-cleanup-after-each";
 import "@testing-library/jest-dom";
 import userEvent from "@testing-library/user-event";
 import App from "./App.js";
 
 describe('filtering tasks', () => {
-    beforeEach(() => {
+    beforeAll(() => {
         render (<App />);
 
         fireEvent.change(screen.getByRole("textbox"), {target: {value: "Task XYZ"}});
@@ -22,6 +22,10 @@ describe('filtering tasks', () => {
         fireEvent.click(screen.getByRole("button", {name: "Add Task"}));
     })
     
+    afterAll(() => {
+        cleanup();
+    })
+
     describe('display correctly filtered tasks', () => {
                         
         it('should filter Task XYZ of To Do column from all columns', () => {

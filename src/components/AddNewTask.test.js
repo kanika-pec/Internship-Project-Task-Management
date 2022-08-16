@@ -1,5 +1,6 @@
-import { render, screen, fireEvent} from '@testing-library/react';
 import React from 'react';
+import "@testing-library/react/dont-cleanup-after-each";
+import { render, screen, fireEvent, cleanup} from '@testing-library/react';
 import '@testing-library/jest-dom';
 import AddNewTask from './AddNewTask.js';
 import userEvent from '@testing-library/user-event';
@@ -8,8 +9,12 @@ const mockSetTaskList = jest.fn();
 
 describe('AddnewTask tests', () => {
 
-    beforeEach(() => {
+    beforeAll(() => {
         render(<AddNewTask taskState={[]} updateList={mockSetTaskList} />);
+    })
+
+    afterAll(() => {
+        cleanup();
     })
 
     describe ('rendering elements correctly', () => {
@@ -43,8 +48,7 @@ describe('AddnewTask tests', () => {
 
         it('should input status correctly', () => {
             
-            const statusEl = screen.getByDisplayValue("Select Status");
-            userEvent.selectOptions(statusEl, "To Do");
+            userEvent.selectOptions(screen.getByDisplayValue("Select Status"), "To Do");
             expect(screen.getByText(/to do/i).selected).toBeTruthy();
             expect(screen.getByText(/in progress/i).selected).toBeFalsy();
             expect(screen.getByText(/complete/i).selected).toBeFalsy();
