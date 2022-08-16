@@ -7,10 +7,14 @@ import userEvent from '@testing-library/user-event';
 const mockSetTaskList = jest.fn();
 
 describe('AddnewTask tests', () => {
+
+    beforeEach(() => {
+        render(<AddNewTask taskState={[]} updateList={mockSetTaskList} />);
+    })
+
     describe ('rendering elements correctly', () => {
         it('should render the elements for adding a task', () => {
-            render(<AddNewTask taskState={[]} updateList={mockSetTaskList} />);
-    
+                
             const inputElement = screen.getByRole('textbox');
             expect(inputElement).toBeInTheDocument();
     
@@ -28,17 +32,17 @@ describe('AddnewTask tests', () => {
             expect(buttonElement).toBeInTheDocument();
         });
     })
+    
     describe ('inputs', () => {
         it('should input task name correctly', () => {
-            render(<AddNewTask taskState={[]} updateList={mockSetTaskList}/>)
-
+            
             const inputEl = screen.getByRole("textbox");
             fireEvent.change(inputEl, {target: {value: "Task ABC"}});
             expect(inputEl.value).toBe("Task ABC");
         })
-        it('should input status correctly', () => {
-            render(<AddNewTask taskState={[]} updateList={mockSetTaskList}/>)
 
+        it('should input status correctly', () => {
+            
             const statusEl = screen.getByDisplayValue("Select Status");
             userEvent.selectOptions(statusEl, "To Do");
             expect(screen.getByText(/to do/i).selected).toBeTruthy();

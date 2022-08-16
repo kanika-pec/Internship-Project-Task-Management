@@ -132,7 +132,7 @@ FN:24,(anonymous_7)
 FN:25,(anonymous_8)
 FN:26,(anonymous_9)
 FNF:10
-FNH:10
+FNH:9
 FNDA:80,TaskTemplate
 FNDA:2,removeTask
 FNDA:2,(anonymous_2)
@@ -140,8 +140,8 @@ FNDA:2,(anonymous_3)
 FNDA:3,moveTask
 FNDA:3,(anonymous_5)
 FNDA:3,(anonymous_6)
-FNDA:1,(anonymous_7)
-FNDA:1,(anonymous_8)
+FNDA:0,(anonymous_7)
+FNDA:2,(anonymous_8)
 FNDA:1,(anonymous_9)
 DA:6,2
 DA:7,2
@@ -149,11 +149,11 @@ DA:11,3
 DA:12,3
 DA:14,3
 DA:17,80
-DA:24,1
-DA:25,1
+DA:24,0
+DA:25,2
 DA:26,1
 LF:9
-LH:9
+LH:8
 BRDA:14,0,0,3
 BRDA:14,0,1,0
 BRDA:18,1,0,71

@@ -16,44 +16,34 @@ const MockFragment = () => {
 }
 
 describe ('adding a task', () => {
+    beforeEach(() => {
+        render (<MockFragment />);
+    })
+
     describe ('adding only one field or invalid field', () => {
         it('should not add task without selecting a status', () => {
-            render (<MockFragment />);
-              
-            const inputEl = screen.getByRole("textbox");
-            fireEvent.change(inputEl, {target: {value: "Task ABC"}});
-            
-            const buttonEl = screen.getByRole("button", {name: "Add Task"});
-            fireEvent.click(buttonEl);
+               
+            fireEvent.change(screen.getByRole("textbox"), {target: {value: "Task ABC"}});
+            fireEvent.click(screen.getByRole("button", {name: "Add Task"}));
 
             const headingElement = screen.queryByText("Task ABC");
             expect(headingElement).toBeNull;
         });
 
         it('should not add task with empty name field', () => {
-            render (<MockFragment />);
-
-            const statusEl = screen.getByDisplayValue("Select Status");
-            userEvent.selectOptions(statusEl, "In Progress");
-
-            const buttonEl = screen.getByRole("button", {name: "Add Task"});
-            fireEvent.click(buttonEl);
+           
+            userEvent.selectOptions(screen.getByDisplayValue("Select Status"), "In Progress");
+            fireEvent.click(screen.getByRole("button", {name: "Add Task"}));
             
             const taskEl = screen.queryByDisplayValue("Change Status");
             expect(taskEl).toBeNull;
         });
 
         it('should not add task with name field made only of white spaces', () => {
-            render (<MockFragment />);
-
-            const inputEl = screen.getByRole("textbox");
-            fireEvent.change(inputEl, {target: {value: " "}});
-
-            const statusEl = screen.getByDisplayValue("Select Status");
-            userEvent.selectOptions(statusEl, "Complete");
             
-            const buttonEl = screen.getByRole("button", {name: "Add Task"});
-            fireEvent.click(buttonEl);
+            fireEvent.change(screen.getByRole("textbox"), {target: {value: " "}});
+            userEvent.selectOptions(screen.getByDisplayValue("Select Status"), "Complete");
+            fireEvent.click(screen.getByRole("button", {name: "Add Task"}));
             
             const headingEl = screen.queryByText(" ");
             expect(headingEl).toBeNull;
@@ -62,17 +52,11 @@ describe ('adding a task', () => {
     })
 
     describe ('adding task with both name and status field', () => {
-        it('should add task in To Do column', () => {
-            render (<MockFragment />);
-   
-            const inputEl = screen.getByRole("textbox");
-            fireEvent.change(inputEl, {target: {value: "Task XYZ"}});
-
-            const statusEl = screen.getByDisplayValue("Select Status");
-            userEvent.selectOptions(statusEl, "To Do");
+        it('should add Task XYZ in To Do column', () => {
             
-            const buttonEl = screen.getByRole("button", {name: "Add Task"});
-            fireEvent.click(buttonEl);
+            fireEvent.change(screen.getByRole("textbox"), {target: {value: "Task XYZ"}});
+            userEvent.selectOptions(screen.getByDisplayValue("Select Status"), "To Do");
+            fireEvent.click(screen.getByRole("button", {name: "Add Task"}));
             
             const headingEl = screen.getByText("Task XYZ");
             expect(headingEl).toBeInTheDocument;
@@ -82,17 +66,11 @@ describe ('adding a task', () => {
 
         });
 
-        it('should add task in In Progress column', () => {
-            render (<MockFragment />);
-   
-            const inputEl = screen.getByRole("textbox");
-            fireEvent.change(inputEl, {target: {value: "Task In Progress"}});
-
-            const statusEl = screen.getByDisplayValue("Select Status");
-            userEvent.selectOptions(statusEl, "In Progress");
+        it('should add Task In Progress in In Progress column', () => {
             
-            const buttonEl = screen.getByRole("button", {name: "Add Task"});
-            fireEvent.click(buttonEl);
+            fireEvent.change(screen.getByRole("textbox"), {target: {value: "Task In Progress"}});
+            userEvent.selectOptions(screen.getByDisplayValue("Select Status"), "In Progress");
+            fireEvent.click(screen.getByRole("button", {name: "Add Task"}));
             
             const headingEl = screen.getByText("Task In Progress");
             expect(headingEl).toBeInTheDocument;
@@ -102,17 +80,11 @@ describe ('adding a task', () => {
 
         });
 
-        it('should add task in Complete column', () => {
-            render (<MockFragment />);
-   
-            const inputEl = screen.getByRole("textbox");
-            fireEvent.change(inputEl, {target: {value: "My Task"}});
-
-            const statusEl = screen.getByDisplayValue("Select Status");
-            userEvent.selectOptions(statusEl, "Complete");
+        it('should add My Task in Complete column', () => {
             
-            const buttonEl = screen.getByRole("button", {name: "Add Task"});
-            fireEvent.click(buttonEl);
+            fireEvent.change(screen.getByRole("textbox"), {target: {value: "My Task"}});
+            userEvent.selectOptions(screen.getByDisplayValue("Select Status"), "Complete");
+            fireEvent.click(screen.getByRole("button", {name: "Add Task"}));
             
             const headingEl = screen.getByText("My Task");
             expect(headingEl).toBeInTheDocument;
@@ -125,8 +97,7 @@ describe ('adding a task', () => {
 
     describe ('display tasks correctly', () => {
         it('should update column count', () => {
-            render(<MockFragment />);
-
+            
             const inputEL = screen.getByPlaceholderText(/task name/i);
             fireEvent.change(inputEL, {target: {value: "Task 1"}});
 
@@ -148,12 +119,9 @@ describe ('adding a task', () => {
         })
 
         it('should not display To Do option in change status dropdown', () => {
-            render(<MockFragment />);
-
-            fireEvent.change(screen.getByPlaceholderText("Task Name"), {target: {value: "Task XYZ"}});
-
-            userEvent.selectOptions(screen.getByDisplayValue("Select Status"),"To Do");
             
+            fireEvent.change(screen.getByPlaceholderText("Task Name"), {target: {value: "Task XYZ"}});
+            userEvent.selectOptions(screen.getByDisplayValue("Select Status"),"To Do");
             fireEvent.click(screen.getByRole("button"));
 
             const taskEl = screen.getByTestId("Task XYZ");
@@ -167,12 +135,9 @@ describe ('adding a task', () => {
         })
 
         it('should not display In Progress option in change status dropdown', () => {
-            render(<MockFragment />);
-
-            fireEvent.change(screen.getByPlaceholderText("Task Name"), {target: {value: "Task A"}});
-
-            userEvent.selectOptions(screen.getByDisplayValue("Select Status"),"In Progress");
             
+            fireEvent.change(screen.getByPlaceholderText("Task Name"), {target: {value: "Task A"}});
+            userEvent.selectOptions(screen.getByDisplayValue("Select Status"),"In Progress");
             fireEvent.click(screen.getByRole("button"));
 
             const taskEl = screen.getByTestId("Task A");
@@ -186,12 +151,9 @@ describe ('adding a task', () => {
         })
 
         it('should not display Complete option in change status dropdown', () => {
-            render(<MockFragment />);
-
-            fireEvent.change(screen.getByPlaceholderText("Task Name"), {target: {value: "Task B"}});
-
-            userEvent.selectOptions(screen.getByDisplayValue("Select Status"),"Complete");
             
+            fireEvent.change(screen.getByPlaceholderText("Task Name"), {target: {value: "Task B"}});
+            userEvent.selectOptions(screen.getByDisplayValue("Select Status"),"Complete");
             fireEvent.click(screen.getByRole("button"));
 
             const taskEl = screen.getByTestId("Task B");
@@ -207,18 +169,16 @@ describe ('adding a task', () => {
 });
 
 describe ('deleting a task', () => {
-    it('should delete task from the column', () => {
+    beforeEach(() => {
         render (<MockFragment />);
-   
-        const inputEl = screen.getByRole("textbox");
-        fireEvent.change(inputEl, {target: {value: "Task P"}});
 
-        const statusEl = screen.getByDisplayValue("Select Status");
-        userEvent.selectOptions(statusEl, "Complete");
-            
-        const buttonEl = screen.getByRole("button", {name: "Add Task"});
-        fireEvent.click(buttonEl);
-            
+        fireEvent.change(screen.getByRole("textbox"), {target: {value: "Task P"}});
+        userEvent.selectOptions(screen.getByDisplayValue("Select Status"), "Complete");
+        fireEvent.click(screen.getByRole("button", {name: "Add Task"}));
+    })
+    
+    it('should delete task from the column', () => {
+        
         const taskEl = screen.getByTestId("Task P");
         const delButton = within(taskEl).getByText("Delete")
         fireEvent.click(delButton);
@@ -226,23 +186,11 @@ describe ('deleting a task', () => {
     })
 
     it('should reduce column count by 1', () => {
-        render (<MockFragment />);
-   
-        const inputEl = screen.getByRole("textbox");
-        fireEvent.change(inputEl, {target: {value: "Task Q"}});
-
-        const statusEl = screen.getByDisplayValue("Select Status");
-        userEvent.selectOptions(statusEl, "To Do");
-            
-        const buttonEl = screen.getByRole("button", {name: "Add Task"});
-        fireEvent.click(buttonEl);
-            
-        const colE = screen.getByTestId("TO DO");
-        const countE = within(colE).getByTestId("col-count");
+                   
+        const countE = within(screen.getByTestId("COMPLETE")).getByTestId("col-count");
         expect(countE.textContent).toBe("1");
 
-        const taskEl = screen.getByTestId("Task Q");
-        const delButton = within(taskEl).getByText("Delete")
+        const delButton = within(screen.getByTestId("Task P")).getByText("Delete")
         fireEvent.click(delButton);
 
         expect(countE.textContent).toBe("0");
@@ -251,17 +199,16 @@ describe ('deleting a task', () => {
 }) 
 
 describe ('moving a task', () => {
-    it('should move task to correct column', () => {
-        render (<MockFragment />);
-   
-        const inputEl = screen.getByRole("textbox");
-        fireEvent.change(inputEl, {target: {value: "Task D"}});
 
-        const statusEl = screen.getByDisplayValue("Select Status");
-        userEvent.selectOptions(statusEl, "To Do");
-            
-        const buttonEl = screen.getByRole("button", {name: "Add Task"});
-        fireEvent.click(buttonEl);
+    beforeEach(() => {
+        render (<MockFragment />);
+
+        fireEvent.change(screen.getByRole("textbox"), {target: {value: "Task D"}});
+        userEvent.selectOptions(screen.getByDisplayValue("Select Status"), "To Do");
+        fireEvent.click(screen.getByRole("button", {name: "Add Task"}));
+    })
+
+    it('should move task to correct column', () => {
             
         const taskEl = screen.getByTestId("Task D");
         const initCol = screen.getByTestId("TO DO");
@@ -273,61 +220,38 @@ describe ('moving a task', () => {
         expect(initCol).not.toContainElement(taskEl); 
 
         const newCol = screen.getByTestId("IN PROGRESS");
-        const newTaskEl = screen.getByTestId("Task D")
-        expect(newCol).toContainElement(newTaskEl);   
+        expect(newCol).toContainElement(screen.getByTestId("Task D"));   
     })
 
     it('should update column count accordingly', () => {
-        render (<MockFragment />);
-   
-        const inputEl = screen.getByRole("textbox");
-        fireEvent.change(inputEl, {target: {value: "Task E"}});
-
-        const statusEl = screen.getByDisplayValue("Select Status");
-        userEvent.selectOptions(statusEl, "In Progress");
-            
-        const buttonEl = screen.getByRole("button", {name: "Add Task"});
-        fireEvent.click(buttonEl);
-            
-        const taskEl = screen.getByTestId("Task E");
-        const initCol = screen.getByTestId("IN PROGRESS");
-        const countE = within(initCol).getByTestId("col-count");
-        expect(countE.textContent).toBe("1");
+        
+        const initCol = screen.getByTestId("TO DO");
+        const initColCountE = within(initCol).getByTestId("col-count");
+        expect(initColCountE.textContent).toBe("1");
         const newCol = screen.getByTestId("COMPLETE");
         const newColCountE = within(newCol).getByTestId("col-count");
         expect(newColCountE.textContent).toBe("0");
 
-        const changeEl = within(taskEl).getByText("Complete")
+        const changeEl = within(screen.getByTestId("Task D")).getByText("Complete");
         fireEvent.click(changeEl);
 
-        expect(countE.textContent).toBe("0");
+        expect(initColCountE.textContent).toBe("0");
         expect(newColCountE.textContent).toBe("1");
    
     })
 
     it('should display correct options for changing status', () => {
-        render (<MockFragment />);
-   
-        const inputEl = screen.getByRole("textbox");
-        fireEvent.change(inputEl, {target: {value: "Task F"}});
-
-        const statusEl = screen.getByDisplayValue("Select Status");
-        userEvent.selectOptions(statusEl, "Complete");
-            
-        const buttonEl = screen.getByRole("button", {name: "Add Task"});
-        fireEvent.click(buttonEl);
-            
-        const taskEl = screen.getByTestId("Task F");
+        
+        const taskEl = screen.getByTestId("Task D");
         const changeStatusEl = within(taskEl).getAllByRole("link");
-        expect(changeStatusEl[0].textContent).toBe("To Do");
-        expect(changeStatusEl[1].textContent).toBe("In Progress");
+        expect(changeStatusEl[0].textContent).toBe("In Progress");
+        expect(changeStatusEl[1].textContent).toBe("Complete");
 
-        const changeEl = within(taskEl).getByText("To Do")
+        const changeEl = within(taskEl).getByText("In Progress")
         fireEvent.click(changeEl);
-
-        const newTaskEl = screen.getByTestId("Task F")
-        const newChangeStatusEl = within(newTaskEl).getAllByRole("link");
-        expect(newChangeStatusEl[0].textContent).toBe("In Progress");
+        
+        const newChangeStatusEl = within(screen.getByTestId("Task D")).getAllByRole("link");
+        expect(newChangeStatusEl[0].textContent).toBe("To Do");
         expect(newChangeStatusEl[1].textContent).toBe("Complete");
         
     })

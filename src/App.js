@@ -1,6 +1,5 @@
 import React from "react";
-import {hot} from "react-hot-loader";
-// import "./App.css";
+import "./App.css";
 import FilterTask from "./components/FilterTask";
 import AddNewTask from "./components/AddNewTask";
 import TaskDisplay from "./components/TaskDisplay";
