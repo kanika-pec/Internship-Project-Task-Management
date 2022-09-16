@@ -2,7 +2,7 @@ import React from "react";
 import TaskTemplate from "./TaskTemplate"
 
 export default function Column({title, taskObjects, taskList, setTaskList}){
-
+    
     const taskElements = taskObjects.map(task => {               //for all state objects filtered by column, creating task JSX        
         return (
             <TaskTemplate 
@@ -11,6 +11,7 @@ export default function Column({title, taskObjects, taskList, setTaskList}){
             column={task.col} 
             id={task.id} 
             show={task.show} 
+            assignee={task.assignee}
             taskList={taskList} 
             setTaskList={setTaskList} />
         )})

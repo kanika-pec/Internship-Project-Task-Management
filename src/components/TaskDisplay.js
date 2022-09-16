@@ -2,7 +2,7 @@ import React from "react";
 import Column from "./Column";
 
 export default function TaskDisplay({taskList, setTaskList}) {
-        
+    
     function countTask(column_num){
         let taskObjects = taskList.filter(taskObj => {
             if (taskObj.col === column_num)

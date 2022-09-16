@@ -6,6 +6,7 @@ import TaskDisplay from "./components/TaskDisplay";
 
 export default function App() {
     const [taskList, setTaskList] = React.useState([])
+    
     return(
         <>
         <FilterTask taskList={taskList} setTaskList={setTaskList}/>

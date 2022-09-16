@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function TaskTemplate({taskname, column, id, show, taskList, setTaskList}) {
+export default function TaskTemplate({taskname, column, id, show, assignee, taskList, setTaskList}) {
     
     function removeTask(){
         setTaskList(prevTaskList => {
@@ -26,6 +26,7 @@ export default function TaskTemplate({taskname, column, id, show, taskList, setT
                     {column !== 3 && <li><a href="#" onClick={() => moveTask(3)}>Complete</a></li>} 
                 </ul>
             </div>
+            <p className="task-assignee">{assignee}</p>
         </div>
     )
 }

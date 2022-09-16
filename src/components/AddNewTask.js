@@ -1,34 +1,49 @@
 import React from "react";
 
 export default function AddNewTask({taskList, setTaskList}){
+
+    const [task, setTask] = React.useState({taskname: "", status: "", assignee: "Person A"})
+
+    const column = {
+        "To Do" : 1, 
+        "In Progress" : 2, 
+        "Complete" : 3
+    }
     
-    function handleClick(){
-        let column_id = document.getElementsByClassName("task-status")[0];
-        let selected_col = column_id.selectedIndex;
-        let inputEl = document.querySelector("input[type='input']");
-        let name_of_task = inputEl.value;
-        if ( !name_of_task.trim()) {
-            return;
-        } else {
-            inputEl.value = "";
-            column_id.selectedIndex = 0;
-            let task_id = taskList.length;
-            setTaskList(prevTaskList => {                                                //adding new task object to state
-                return [...prevTaskList, {id: task_id, taskname: name_of_task, col: selected_col, show: true}]
-            })
-        }
+    function handleSubmit(event) {
+        event.preventDefault();
+        const newTask = {id: taskList.length, taskname: task.taskname, col: column[task.status], show: true, assignee: task.assignee}
+        setTaskList(prevTaskList => {     
+            return [...prevTaskList, newTask]
+        })
+        setTask({taskname: "", status: "", assignee: "Person A"})
+    }
+
+    function handleChange(event){
+        const {name, value} = event.target
+        setTask(prevTask => {
+            return {
+                ...prevTask, [name]: value
+            }
+        })
     }
     
     return (
-        <div className="add-new-task">
-            <input type="input" placeholder="Task Name" ></input>
-            <select className="task-status" data-testid='select' >
-                <option name="status" style={{opacity: 0}}>Select Status</option>
-                <option name="todo">To Do</option>
-                <option name="progress">In Progress</option>
-                <option name="complete">Complete</option>
+        <form className="add-new-task" onSubmit={handleSubmit}>
+            <input type="input" placeholder="Task Name" name="taskname" value={task.taskname} onChange={handleChange}></input>
+            <select className="task-status" name="status" value={task.status} onChange={handleChange} data-testid='select' >
+                <option value="" style={{display: "none"}}>Select Status</option>
+                <option value="To Do">To Do</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Complete">Complete</option>
             </select>
-            <button type="button" onClick={handleClick} >Add Task</button>
-        </div>
+            <select id="select-assignee" name="assignee" value={task.assignee} onChange={handleChange}>
+                <option value="Person A">Person A</option>
+                <option value="Person B">Person B</option>
+                <option value="Person C">Person C</option>
+                <option value="Person D">Person D</option>
+            </select>
+            <button>Add Task</button>
+        </form>
     )
 }
