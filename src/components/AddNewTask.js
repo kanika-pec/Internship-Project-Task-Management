@@ -2,7 +2,7 @@ import React from "react";
 
 export default function AddNewTask({taskList, setTaskList}){
 
-    const [task, setTask] = React.useState({taskname: "", status: "", assignee: "Person A"})
+    const [task, setTask] = React.useState({taskname: "", status: "", assignee: ""})
 
     const column = {
         "To Do" : 1, 
@@ -16,7 +16,7 @@ export default function AddNewTask({taskList, setTaskList}){
         setTaskList(prevTaskList => {     
             return [...prevTaskList, newTask]
         })
-        setTask({taskname: "", status: "", assignee: "Person A"})
+        setTask({taskname: "", status: "", assignee: ""})
     }
 
     function handleChange(event){
@@ -31,17 +31,12 @@ export default function AddNewTask({taskList, setTaskList}){
     return (
         <form className="add-new-task" onSubmit={handleSubmit}>
             <input type="input" placeholder="Task Name" name="taskname" value={task.taskname} onChange={handleChange}></input>
+            <input type="input" placeholder="Add Assignee" name="assignee" value={task.assignee} onChange={handleChange}></input>
             <select className="task-status" name="status" value={task.status} onChange={handleChange} data-testid='select' >
                 <option value="" style={{display: "none"}}>Select Status</option>
                 <option value="To Do">To Do</option>
                 <option value="In Progress">In Progress</option>
                 <option value="Complete">Complete</option>
-            </select>
-            <select id="select-assignee" name="assignee" value={task.assignee} onChange={handleChange}>
-                <option value="Person A">Person A</option>
-                <option value="Person B">Person B</option>
-                <option value="Person C">Person C</option>
-                <option value="Person D">Person D</option>
             </select>
             <button>Add Task</button>
         </form>
