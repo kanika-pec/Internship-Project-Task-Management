@@ -1,20 +1,19 @@
-import React, { createContext} from "react";
-import App from ".\App.js"
+import React from "react";
 
-export const TaskContext = createContext(null);
+const TaskContext = React.createContext();
 
-export const TaskContextProvider = ({children}) => {
-    const [taskList, setTaskList] = React.useState([]);
-    const value = {
-        taskList, 
-        setTaskList,
-    };
+// export const TaskContextProvider = ({children}) => {
+//     const [taskList, setTaskList] = React.useState([]);
+//     const value = {
+//         taskList, 
+//         setTaskList,
+//     };
 
-    return (
-        <TaskContext.Provider value={value}>
-            <App />
-        </TaskContext.Provider>
-    );
-};
+//     return (
+//         <TaskContext.Provider value={value}>
+//             <App />
+//         </TaskContext.Provider>
+//     );
+// };
 
 export default TaskContext;
